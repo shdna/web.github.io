@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start - Galaksi Tema</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="start.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Selamat Datang di Tab Start</h1>
+        <p>Ini adalah tab yang muncul ketika Anda mengklik tombol "Start" di halaman utama.</p>
+        <button onclick="window.location.href='index.html'">Kembali ke Home</button>
+    </div>
+
+</body>
+</html>
+<body>
+    <h1>Menampilkan Posisi Bintang Rigel Berdasarkan Tanggal dan Waktu</h1>
+
+    <div>
+        <label for="date-time">Pilih Tanggal dan Waktu:</label>
+        <input type="datetime-local" id="date-time" name="date-time" required>
+    </div>
+
+    <div>
+        <button onclick="showRigelPosition()">Tampilkan Posisi Rigel</button>
+    </div>
+
+    <div id="sky-map" style="width: 100%; height: 500px;"></div>
+
+    <p id="position-info"></p>
+
+    <script>
+        function showRigelPosition() {
+            // Mengambil tanggal dan waktu dari input
+            const dateTime = document.getElementById("date-time").value;
+            if (!dateTime) {
+                alert("Silakan pilih tanggal dan waktu.");
+                return;
+            }
+
+            const observerLatitude = -6.200000; // Latitude Jakarta
+            const observerLongitude = 106.816666; // Longitude Jakarta
+            const rigelRA = 5.2423; // Right Ascension Rigel (dalam jam)
+            const rigelDec = -8.2016; // Declination Rigel (dalam derajat)
+
+            // Mengonversi tanggal dan waktu yang dipilih menjadi objek Date JavaScript
+            const date = new Date(dateTime);
+
+            // Menampilkan informasi posisi Rigel
+            const positionInfo = `
+                Tanggal dan Waktu: ${date.toLocaleString()}<br>
+                Posisi Rigel (RA, Dec): ${rigelRA} jam, ${rigelDec}°<br>
+                Lokasi Pengamat: Latitude: ${observerLatitude}°, Longitude: ${observerLongitude}°
+            `;
+            document.getElementById("position-info").innerHTML = positionInfo;
+
+            // Menggunakan Stellarium Web untuk visualisasi langit
+            const skyMapElement = document.getElementById("sky-map");
+            const skyMapUrl = `https://stellarium-web.org/sky/?lat=${observerLatitude}&lng=${observerLongitude}&date=${date.toISOString()}&constellations=true&stars=true&planets=true&showGrid=true&showEcliptic=true`;
+
+            // Membuat iframe untuk visualisasi Stellarium
+            skyMapElement.innerHTML = `<iframe src="${skyMapUrl}" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`;
+        }
+    </script>
+</body>
+</html>
